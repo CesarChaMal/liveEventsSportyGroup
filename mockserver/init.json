@@ -1,0 +1,12 @@
+[
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/events/match-123/score"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": "Team A 2 - 1 Team B"
+    }
+  }
+]

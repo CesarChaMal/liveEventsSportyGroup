@@ -1,0 +1,119 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.sportygroup</groupId>
+  <artifactId>live-events</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.1.0</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
+  <properties>
+    <!-- Java version that aligns with your environment (e.g. 17 or 20) -->
+    <java.version>17</java.version>
+
+    <!-- Default to production build -->
+    <angular.build.configuration>production</angular.build.configuration>
+    <spring.profiles.active>prod</spring.profiles.active>
+  </properties>
+
+  <!-- Define profiles that override the Angular build configuration -->
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <properties>
+        <angular.build.configuration>development</angular.build.configuration>
+        <spring.profiles.active>dev</spring.profiles.active>
+      </properties>
+    </profile>
+    <profile>
+      <id>test</id>
+      <properties>
+        <angular.build.configuration>test</angular.build.configuration>
+        <spring.profiles.active>test</spring.profiles.active>
+      </properties>
+    </profile>
+    <profile>
+      <id>prod</id>
+      <properties>
+        <angular.build.configuration>production</angular.build.configuration>
+        <spring.profiles.active>prod</spring.profiles.active>
+      </properties>
+    </profile>
+  </profiles>
+
+  <dependencies>
+    <!-- Required -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.kafka</groupId>
+      <artifactId>spring-kafka</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.retry</groupId>
+      <artifactId>spring-retry</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+
+    <!-- Optional -->
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+
+    <!-- Testing -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.9.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>4.11.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Build a single fat jar with embedded Tomcat -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <!-- or specify <version>3.1.0</version> -->
+        <configuration>
+          <fork>true</fork>
+          <classpathLayoutType>FILE</classpathLayoutType>
+          <useClasspathFile>true</useClasspathFile>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>
