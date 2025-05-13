@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.util.concurrent.SettableListenableFuture;
 
 import java.util.concurrent.CompletableFuture;
 

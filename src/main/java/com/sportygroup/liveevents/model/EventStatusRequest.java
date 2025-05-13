@@ -1,13 +1,16 @@
 package com.sportygroup.liveevents.model;
 
-public class EventStatusRequest {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
-    private String eventId;
-    private String status; // e.g. "live" or "not live"
+import java.util.Objects;
 
-    public EventStatusRequest() {
-        // Default constructor for deserialization
-    }
+public final class EventStatusRequest {
+    @NotBlank
+    private final String eventId;
+
+    @Pattern(regexp = "live|not live")
+    private final String status;
 
     public EventStatusRequest(String eventId, String status) {
         this.eventId = eventId;
@@ -18,15 +21,29 @@ public class EventStatusRequest {
         return eventId;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
-
     public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EventStatusRequest)) return false;
+        EventStatusRequest that = (EventStatusRequest) o;
+        return Objects.equals(eventId, that.eventId) &&
+                Objects.equals(status, that.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventId, status);
+    }
+
+    @Override
+    public String toString() {
+        return "EventStatusRequest{" +
+                "eventId='" + eventId + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

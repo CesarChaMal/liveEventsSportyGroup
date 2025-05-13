@@ -1,7 +1,7 @@
 package com.sportygroup.liveevents.controller;
 
 import com.sportygroup.liveevents.model.EventStatusRequest;
-import com.sportygroup.liveevents.service.EventSchedulerService;
+import com.sportygroup.liveevents.service.EventTrackingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,11 +16,11 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class EventStatusControllerTest {
 
-    @Mock
-    EventSchedulerService schedulerService;
-
     @InjectMocks
-    EventStatusController controller;
+    private EventStatusController controller;
+
+    @Mock
+    private EventTrackingService trackingService;
 
     @Test
     void updateEventStatus_shouldReturnOk() {
@@ -29,6 +29,6 @@ class EventStatusControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Event status updated.", response.getBody());
-        verify(schedulerService).updateEventStatus("match-1", "live");
+        verify(trackingService).updateEventStatus("match-1", "live");
     }
 }
