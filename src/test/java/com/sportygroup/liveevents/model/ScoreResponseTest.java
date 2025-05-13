@@ -14,7 +14,7 @@ class ScoreResponseTest {
         ObjectMapper mapper = new ObjectMapper();
         ScoreResponse response = mapper.readValue(json, ScoreResponse.class);
 
-        assertEquals("match-1", response.getEventId());
-        assertEquals("Team A 1 - 0 Team B", response.getCurrentScore());
+        assertEquals("match-1", response.eventId());
+        assertEquals("Team A 1 - 0 Team B", response.currentScore());
     }
 }

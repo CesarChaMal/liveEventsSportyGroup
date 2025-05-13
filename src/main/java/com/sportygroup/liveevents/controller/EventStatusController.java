@@ -31,8 +31,8 @@ public class EventStatusController {
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     public ResponseEntity<String> updateEventStatus(@Valid @RequestBody EventStatusRequest request) {
-        logger.info("Received status update for event {}: {}", request.getEventId(), request.getStatus());
-        trackingService.updateEventStatus(request.getEventId(), request.getStatus());
+        logger.info("Received status update for event {}: {}", request.eventId(), request.status());
+        trackingService.updateEventStatus(request.eventId(), request.status());
         return ResponseEntity.ok("Event status updated.");
     }
 }

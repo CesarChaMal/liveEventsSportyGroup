@@ -21,7 +21,7 @@ public class EventProcessorFacadeImpl implements EventProcessorFacade {
     @Override
     public void processEvent(String eventId) {
         Optional<ScoreResponse> score = eventFetcher.fetchScore(eventId);
-        score.map(ScoreResponse::getCurrentScore)
+        score.map(ScoreResponse::currentScore)
                 .ifPresent(currentScore -> eventPublisher.publish(eventId, currentScore));
     }
 }
