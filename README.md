@@ -1,20 +1,25 @@
 # 🟢 Live Events Service
 
+![CI](https://github.com/CesarChaMal/liveEventsSportyGroup/actions/workflows/ci.yml/badge.svg)
+
+
 ## 📌 Overview
 
-The **Live Events Service** is a Spring Boot backend application that:
+The **Live Events Service** is a modular, testable Spring Boot backend application that:
 
-- Accepts incoming event status updates (e.g. `live`, `not live`) via a REST API.
-- Periodically polls an external API for updated event scores.
-- Publishes those scores to a Kafka topic.
-- Uses scheduling, logging, and retry mechanisms to ensure robustness.
+- Accepts live event status updates via a REST API
+- Periodically polls an external system for updated scores
+- Publishes live scores to a Kafka topic using configurable retry logic
+- Leverages the Facade, Adapter, and Ports and Adapters (Hexagonal) design patterns
+- Applies SOLID principles, immutability, validation, and clean separation of concerns
+- Is instrumented with Spring Boot Actuator for operational metrics and health checks
+- Includes full unit and integration test coverage for critical paths
 
-This is a standalone backend service. No frontend UI is included.
+This is a backend-only service — no frontend layer is included.
 
 ---
 
 ## 🚀 Quick Start
-
 ### Prerequisites
 
 - Java 17+
@@ -131,6 +136,20 @@ curl -X POST http://localhost:8080/events/status \
 -d '{"eventId": "match-123", "status": "live"}'
 ```
 
+## 🧠 Design Notes
+
+- ✅ Facade Pattern: Simplifies the interaction between polling and external systems (fetch + publish)
+- ✅ Adapter Pattern: Clean boundary around infrastructure (Kafka, HTTP clients)
+- ✅ Hexagonal Architecture (Ports & Adapters): Core domain logic is isolated from external dependencies
+- ✅ Single Responsibility Principle (SRP): Scheduling, state tracking, publishing, and fetching are decoupled
+- ✅ Retry Logic: Built-in @Retryable support and advanced RetryTemplate configuration
+- ✅ Immutability: Java 17 record used for DTOs to ensure safe data transfer
+- ✅ Validation: Uses @Validated, @NotBlank, and @Pattern to enforce strict input validation
+- ✅ Dependency Injection: Enables testability and adherence to the Dependency Inversion Principle
+- ✅ Test Strategy: Combines unit tests (Mockito + JUnit 5) and full integration test with @SpringBootTest
+- ✅ Docker-Ready: Packaged with Docker and docker-compose for local orchestration
+- ✅ Observability: Actuator endpoints exposed at /actuator/** including /health, /info, and /metrics
+
 ---
 
 ## 🐳 Docker Setup
@@ -165,6 +184,13 @@ Run it with:
 docker-compose -f src/main/docker/kafka.yml up
 ```
 
+## 📈 Actuator Endpoints
+
+Spring Boot Actuator exposes:
+
+- `GET /actuator/health` — Service health check
+- `GET /actuator/metrics` — JVM and system metrics
+- `GET /actuator/info` — Project metadata (if configured)
 
 
 ## ⚠ AI Use Disclosure

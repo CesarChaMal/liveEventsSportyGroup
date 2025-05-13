@@ -84,6 +84,13 @@
     </dependency>
 
     <!-- Testing -->
+    <!-- Spring Boot Test for @SpringBootTest, @MockBean, etc. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
@@ -96,6 +103,19 @@
       <artifactId>mockito-junit-jupiter</artifactId>
       <version>4.11.0</version>
       <scope>test</scope>
+    </dependency>
+
+    <!-- Jakarta Bean Validation -->
+    <dependency>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+      <version>3.0.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>8.0.1.Final</version>
     </dependency>
   </dependencies>
 

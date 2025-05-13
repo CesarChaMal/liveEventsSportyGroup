@@ -1,6 +1,5 @@
 package com.sportygroup.liveevents.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -9,7 +8,4 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record ScoreResponse(
         @JsonProperty("eventId") String eventId,
         @JsonProperty("currentScore") String currentScore
-) {
-    @JsonCreator
-    public ScoreResponse {}
-}
+) {}

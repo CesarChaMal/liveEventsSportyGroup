@@ -14,6 +14,10 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.retry.backoff.FixedBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,5 +54,20 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
+    }
+
+    @Bean
+    public RetryTemplate retryTemplate() {
+        RetryTemplate template = new RetryTemplate();
+
+        FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
+        backOffPolicy.setBackOffPeriod(2000); // 2s
+        template.setBackOffPolicy(backOffPolicy);
+
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(3);
+        template.setRetryPolicy(retryPolicy);
+
+        return template;
     }
 }
