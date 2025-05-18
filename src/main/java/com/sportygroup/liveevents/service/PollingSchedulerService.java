@@ -1,6 +1,9 @@
 package com.sportygroup.liveevents.service;
 
+import com.sportygroup.liveevents.controller.EventStatusController;
 import com.sportygroup.liveevents.facade.EventProcessorFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +12,7 @@ import java.util.Set;
 @Service
 public class PollingSchedulerService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PollingSchedulerService.class);
     private final EventTrackingService trackingService;
     private final EventProcessorFacade processorFacade;
 
@@ -17,9 +21,13 @@ public class PollingSchedulerService {
         this.processorFacade = processorFacade;
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedDelayString = "${polling.interval:10000}")
     public void pollLiveEvents() {
         Set<String> liveEventIds = trackingService.getLiveEventIds();
-        liveEventIds.forEach(processorFacade::processEvent);
+        logger.debug("Polling {} live events...", liveEventIds.size());
+        liveEventIds.forEach(eventId -> {
+            logger.debug("Processing event ID: {}", eventId);
+            processorFacade.processEvent(eventId);
+        });
     }
 }
