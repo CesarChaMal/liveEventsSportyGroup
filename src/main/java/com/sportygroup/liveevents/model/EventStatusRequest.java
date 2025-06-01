@@ -8,5 +8,5 @@ import jakarta.validation.constraints.Pattern;
  */
 public record EventStatusRequest(
         @NotBlank String eventId,
-        @Pattern(regexp = "live|not live") String status
+        @Pattern(regexp = "live|ended") String status
 ) {}
