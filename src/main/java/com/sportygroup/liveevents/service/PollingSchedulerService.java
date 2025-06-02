@@ -1,6 +1,5 @@
 package com.sportygroup.liveevents.service;
 
-import com.sportygroup.liveevents.controller.EventStatusController;
 import com.sportygroup.liveevents.facade.EventProcessorFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +24,12 @@ public class PollingSchedulerService {
     public void pollLiveEvents() {
         Set<String> liveEventIds = trackingService.getLiveEventIds();
         logger.debug("Polling {} live events...", liveEventIds.size());
-        liveEventIds.forEach(eventId -> {
-            logger.debug("Processing event ID: {}", eventId);
-            processorFacade.processEvent(eventId);
-        });
+//        liveEventIds.forEach(eventId -> processorFacade.processEvent(eventId));
+        liveEventIds.forEach(this::proccesEvent);
+    }
+
+    private void proccesEvent(String eventId) {
+        logger.debug("Processing event ID: {}", eventId);
+        processorFacade.processEvent(eventId);
     }
 }
