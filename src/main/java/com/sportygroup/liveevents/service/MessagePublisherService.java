@@ -22,11 +22,7 @@ public class MessagePublisherService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    @Retryable(
-            value = Exception.class,
-            maxAttempts = 3,
-            backoff = @Backoff(delay = 2000, multiplier = 2)
-    )
+    @Retryable(value = Exception.class, maxAttempts = 3, backoff = @Backoff(delay = 2000, multiplier = 2))
     public void publishMessage(String eventId, String payload) {
         CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(TOPIC, eventId, payload);
         future.whenComplete((result, ex) -> {
