@@ -96,7 +96,7 @@ Message format: the score returned from the external `/score` endpoint.
 
 ## 🛠 Configuration
 
-To change the polling interval, update the `@Scheduled(fixedRate = 10000)` annotation in `EventSchedulerService`.
+To change the polling interval, update the `@Scheduled(fixedRate = 10000)` annotation in `PollingSchedulerService`.
 
 ---
 
@@ -108,9 +108,9 @@ Unit tests are written using:
 - Mockito
 
 ### Included Test Classes
-- EventSchedulerServiceTest – Mocks RestTemplate and MessagePublisherService to verify score polling and Kafka publishing.
+- PollingSchedulerServiceTest – Mocks RestTemplate and MessagePublisherService to verify score polling and Kafka publishing.
 - MessagePublisherServiceTest – Verifies success and failure handling of Kafka message publication using CompletableFuture.
-- EventStatusControllerTest – Tests REST endpoint /events/status by mocking the EventSchedulerService.
+- EventStatusControllerTest – Tests REST endpoint /events/status by mocking the PollingSchedulerService.
 ```bash
 # Run all tests
 mvn test
