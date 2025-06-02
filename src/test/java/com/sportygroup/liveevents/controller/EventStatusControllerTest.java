@@ -24,11 +24,25 @@ class EventStatusControllerTest {
 
     @Test
     void updateEventStatus_shouldReturnOk() {
-        EventStatusRequest request = new EventStatusRequest("match-1", "live");
+        EventStatusRequest request = new EventStatusRequest("match-123", "live");
+
         ResponseEntity<String> response = controller.updateEventStatus(request);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Event status updated.", response.getBody());
-        verify(trackingService).updateEventStatus("match-1", "live");
+
+        verify(trackingService).updateEventStatus("match-123", "live");
+    }
+
+    @Test
+    void updateEventStatus_shouldHandleNotLiveStatus() {
+        EventStatusRequest request = new EventStatusRequest("match-123", "not live");
+
+        ResponseEntity<String> response = controller.updateEventStatus(request);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Event status updated.", response.getBody());
+
+        verify(trackingService).updateEventStatus("match-123", "not live");
     }
 }
