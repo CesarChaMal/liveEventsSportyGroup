@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
+// This class replaces the old RestEventFetcher implementation with proper hexagonal architecture
 @ExternalAdapter
 public class RestScoreFetcher implements ScoreFetcher {
     private static final Logger logger = LoggerFactory.getLogger(RestScoreFetcher.class);

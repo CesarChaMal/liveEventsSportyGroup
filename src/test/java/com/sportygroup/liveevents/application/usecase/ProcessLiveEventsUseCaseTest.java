@@ -54,4 +54,41 @@ class ProcessLiveEventsUseCaseTest {
 
         verify(eventPublisher, never()).publish(any(), any());
     }
+
+    // Tests for single event processing (replaces EventProcessorFacadeImplTest)
+    @Test
+    void shouldProcessSingleEventWithEventId() {
+        EventId eventId = new EventId("match-456");
+        Score score = new Score("Team X 1-0 Team Y");
+        
+        when(scoreFetcher.fetchScore(eventId)).thenReturn(Optional.of(score));
+
+        useCase.processEvent(eventId);
+
+        verify(eventPublisher).publish(eventId, score);
+    }
+
+    @Test
+    void shouldProcessSingleEventWithStringId() {
+        String eventIdString = "match-789";
+        EventId eventId = new EventId(eventIdString);
+        Score score = new Score("Team P 2-1 Team Q");
+        
+        when(scoreFetcher.fetchScore(eventId)).thenReturn(Optional.of(score));
+
+        useCase.processEvent(eventIdString);
+
+        verify(eventPublisher).publish(eventId, score);
+    }
+
+    @Test
+    void shouldSkipSingleEventWithoutScore() {
+        EventId eventId = new EventId("match-000");
+        
+        when(scoreFetcher.fetchScore(eventId)).thenReturn(Optional.empty());
+
+        useCase.processEvent(eventId);
+
+        verify(eventPublisher, never()).publish(any(), any());
+    }
 }

@@ -7,6 +7,9 @@ import com.sportygroup.liveevents.domain.service.DomainEventTrackingService;
 import java.util.Optional;
 import java.util.Set;
 
+// This use case now also serves as a facade for event processing operations
+// It handles both batch processing (execute) and single event processing (processEvent)
+// Replaces the need for a separate EventProcessorFacade
 @UseCase
 public class ProcessLiveEventsUseCase {
     private final DomainEventTrackingService trackingService;
@@ -26,8 +29,14 @@ public class ProcessLiveEventsUseCase {
         liveEventIds.forEach(this::processEvent);
     }
 
-    private void processEvent(EventId eventId) {
+    // Public method for processing single events (replaces EventProcessorFacadeImpl)
+    public void processEvent(EventId eventId) {
         Optional<Score> score = scoreFetcher.fetchScore(eventId);
         score.ifPresent(s -> eventPublisher.publish(eventId, s));
+    }
+
+    // Convenience method for string eventId
+    public void processEvent(String eventId) {
+        processEvent(new EventId(eventId));
     }
 }

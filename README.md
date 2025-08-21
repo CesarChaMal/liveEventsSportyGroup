@@ -24,7 +24,7 @@ This is a backend-only service — no frontend layer is included.
 
 - Java 17+
 - Maven 3.x
-- Kafka broker running locally (e.g. via Docker)
+- (Optional) Kafka broker - can run locally via Docker or remote server
 - (Optional) Swagger/OpenAPI UI for API testing
 
 ---
@@ -35,14 +35,21 @@ This is a backend-only service — no frontend layer is included.
 # Build the application
 mvn clean install
 
-# Run the app
+# Run with default Kafka (localhost:9092)
 mvn spring-boot:run
+
+# Run with custom Kafka server
+KAFKA_SERVER_IP=172.27.11.4 mvn spring-boot:run
 ```
 
 Or run the packaged JAR:
 
 ```bash
+# Default Kafka server
 java -jar target/live-events-0.0.1-SNAPSHOT.jar
+
+# Custom Kafka server
+KAFKA_SERVER_IP=172.27.11.4 java -jar target/live-events-0.0.1-SNAPSHOT.jar
 ```
 
 ---
@@ -96,7 +103,24 @@ Message format: the score returned from the external `/score` endpoint.
 
 ## 🛠 Configuration
 
-To change the polling interval, update the `@Scheduled(fixedRate = 10000)` annotation in `PollingSchedulerService`.
+### Environment Variables
+
+- `KAFKA_SERVER_IP` - Kafka server IP address (default: localhost)
+
+### Application Properties
+
+- `polling.interval` - Polling interval in milliseconds (default: 10000)
+- `events.base-url` - External events API base URL
+
+### Examples
+
+```bash
+# Set Kafka server IP
+export KAFKA_SERVER_IP=172.27.11.4
+
+# Docker
+docker run -e KAFKA_SERVER_IP=172.27.11.4 live-events-app
+```
 
 ---
 
@@ -127,6 +151,24 @@ http://localhost:8080/swagger-ui/index.html
 ```
 
 ---
+
+## 🎮 Live Events Simulation
+
+Run the standalone simulation to see hexagonal architecture in action:
+
+```bash
+# Run simulation (tries real Kafka, falls back to mock)
+java -cp target/classes com.sportygroup.liveevents.LiveEventsSimulation
+
+# With custom Kafka server
+KAFKA_SERVER_IP=172.27.11.4 java -cp target/classes com.sportygroup.liveevents.LiveEventsSimulation
+```
+
+**Features:**
+- ✅ **Smart Kafka Detection** - Uses real Kafka if available, mock if not
+- ✅ **Complete Test Scenarios** - 5 comprehensive test cases
+- ✅ **No External Dependencies** - Runs standalone without Spring Boot
+- ✅ **Environment Configurable** - Respects `KAFKA_SERVER_IP` variable
 
 ## ✅ Example cURL
 
@@ -223,7 +265,11 @@ docker build -t live-events-app .
 A docker-compose.yml is also in the root. It starts the Spring Boot app along with any configured services.
 
 ```bash
+# Run with default configuration
 docker-compose -f docker-compose.yml up
+
+# Run with custom Kafka server
+KAFKA_SERVER_IP=172.27.11.4 docker-compose -f docker-compose.yml up
 ```
 
 ### ⚙ Kafka Only (Optional for Dev/Testing)
@@ -235,6 +281,13 @@ Run it with:
 ```bash
 docker-compose -f src/main/docker/kafka.yml up
 ```
+
+### 🔍 Testing Without Kafka
+
+The application gracefully handles Kafka unavailability:
+- **Integration tests** use mocked Kafka
+- **Simulation** falls back to mock publisher
+- **Spring Boot app** will show connection errors but continue running
 
 ## 📈 Actuator Endpoints
 

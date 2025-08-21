@@ -6,6 +6,7 @@ import com.sportygroup.liveevents.domain.port.EventPublisherPort;
 
 import com.sportygroup.liveevents.out.messaging.MessagePublisherService;
 
+// This class replaces the old KafkaEventPublisher implementation with proper hexagonal architecture
 @ExternalAdapter
 public class KafkaEventPublisherAdapter implements EventPublisherPort {
     private final MessagePublisherService publisherService;

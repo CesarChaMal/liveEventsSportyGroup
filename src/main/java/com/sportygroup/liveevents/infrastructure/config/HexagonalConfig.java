@@ -10,20 +10,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class HexagonalConfig {
 
+    // Domain services need manual configuration since @DomainService doesn't extend @Component
+    // to keep domain layer framework-independent
     @Bean
     public DomainEventTrackingService domainEventTrackingService(EventRepository eventRepository) {
         return new DomainEventTrackingService(eventRepository);
     }
 
-    @Bean
-    public UpdateEventStatusUseCase updateEventStatusUseCase(DomainEventTrackingService trackingService) {
-        return new UpdateEventStatusUseCase(trackingService);
-    }
-
-    @Bean
-    public ProcessLiveEventsUseCase processLiveEventsUseCase(DomainEventTrackingService trackingService,
-                                                           ScoreFetcher scoreFetcher,
-                                                           EventPublisherPort eventPublisher) {
-        return new ProcessLiveEventsUseCase(trackingService, scoreFetcher, eventPublisher);
-    }
+    // Use cases are now automatically configured via @UseCase annotation
+    // ProcessLiveEventsUseCase and UpdateEventStatusUseCase beans created automatically
 }
