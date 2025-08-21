@@ -1,5 +1,6 @@
 package com.sportygroup.liveevents.out.external;
 
+import com.sportygroup.liveevents.common.ExternalAdapter;
 import com.sportygroup.liveevents.domain.model.*;
 import com.sportygroup.liveevents.domain.port.ScoreFetcher;
 
@@ -12,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
-@Component
+@ExternalAdapter
 public class RestScoreFetcher implements ScoreFetcher {
     private static final Logger logger = LoggerFactory.getLogger(RestScoreFetcher.class);
     private final RestTemplate restTemplate;

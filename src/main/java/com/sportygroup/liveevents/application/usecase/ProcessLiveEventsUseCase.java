@@ -1,11 +1,13 @@
 package com.sportygroup.liveevents.application.usecase;
 
+import com.sportygroup.liveevents.common.UseCase;
 import com.sportygroup.liveevents.domain.model.*;
 import com.sportygroup.liveevents.domain.port.*;
 import com.sportygroup.liveevents.domain.service.DomainEventTrackingService;
 import java.util.Optional;
 import java.util.Set;
 
+@UseCase
 public class ProcessLiveEventsUseCase {
     private final DomainEventTrackingService trackingService;
     private final ScoreFetcher scoreFetcher;

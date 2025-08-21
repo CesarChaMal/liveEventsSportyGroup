@@ -1,10 +1,12 @@
 package com.sportygroup.liveevents.domain.service;
 
+import com.sportygroup.liveevents.common.DomainService;
 import com.sportygroup.liveevents.domain.model.*;
 import com.sportygroup.liveevents.domain.port.EventRepository;
 
 import java.util.Set;
 
+@DomainService
 public class DomainEventTrackingService {
     private final EventRepository eventRepository;
 

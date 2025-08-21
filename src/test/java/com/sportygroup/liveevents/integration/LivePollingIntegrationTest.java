@@ -39,6 +39,7 @@ class LivePollingIntegrationTest {
     void pollLiveEvent_shouldFetchAndPublish() {
         String eventId = "test-event";
         logger.debug("Marking event '{}' as live", eventId);
+
         updateEventStatusUseCase.execute(eventId, "live");
 
         ScoreResponse mockResponse = new ScoreResponse(eventId, "Team X 2 - 1 Team Y");

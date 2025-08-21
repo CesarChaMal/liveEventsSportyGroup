@@ -1,8 +1,10 @@
 package com.sportygroup.liveevents.application.usecase;
 
+import com.sportygroup.liveevents.common.UseCase;
 import com.sportygroup.liveevents.domain.model.*;
 import com.sportygroup.liveevents.domain.service.DomainEventTrackingService;
 
+@UseCase
 public class UpdateEventStatusUseCase {
     private final DomainEventTrackingService trackingService;
 

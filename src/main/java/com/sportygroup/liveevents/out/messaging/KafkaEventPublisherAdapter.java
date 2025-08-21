@@ -1,12 +1,12 @@
 package com.sportygroup.liveevents.out.messaging;
 
+import com.sportygroup.liveevents.common.ExternalAdapter;
 import com.sportygroup.liveevents.domain.model.*;
 import com.sportygroup.liveevents.domain.port.EventPublisherPort;
 
 import com.sportygroup.liveevents.out.messaging.MessagePublisherService;
-import org.springframework.stereotype.Component;
 
-@Component
+@ExternalAdapter
 public class KafkaEventPublisherAdapter implements EventPublisherPort {
     private final MessagePublisherService publisherService;
 
