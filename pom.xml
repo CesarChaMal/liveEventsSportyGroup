@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.sportygroup</groupId>
   <artifactId>live-events</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>v0.5 P.0</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
