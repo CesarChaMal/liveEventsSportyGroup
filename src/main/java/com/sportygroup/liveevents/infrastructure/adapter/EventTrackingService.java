@@ -1,7 +1,6 @@
 package com.sportygroup.liveevents.infrastructure.adapter;
 
 import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
