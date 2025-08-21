@@ -25,10 +25,10 @@ public class PollingSchedulerService {
         Set<String> liveEventIds = trackingService.getLiveEventIds();
         logger.debug("Polling {} live events...", liveEventIds.size());
 //        liveEventIds.forEach(eventId -> processorFacade.processEvent(eventId));
-        liveEventIds.forEach(this::proccesEvent);
+        liveEventIds.forEach(this::processEvent);
     }
 
-    private void proccesEvent(String eventId) {
+    private void processEvent(String eventId) {
         logger.debug("Processing event ID: {}", eventId);
         processorFacade.processEvent(eventId);
     }
