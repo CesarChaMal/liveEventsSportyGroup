@@ -1,8 +1,9 @@
 package com.sportygroup.liveevents.integration;
 
 import com.sportygroup.liveevents.LiveEventsApplication;
-import com.sportygroup.liveevents.model.ScoreResponse;
-import com.sportygroup.liveevents.service.EventTrackingService;
+import com.sportygroup.liveevents.application.dto.ScoreResponse;
+import com.sportygroup.liveevents.application.usecase.UpdateEventStatusUseCase;
+
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ class LivePollingIntegrationTest {
     private static final Logger logger = LoggerFactory.getLogger(LivePollingIntegrationTest.class);
 
     @Autowired
-    private EventTrackingService trackingService;
+    private UpdateEventStatusUseCase updateEventStatusUseCase;
 
     @MockBean
     private RestTemplate restTemplate;
@@ -38,7 +39,7 @@ class LivePollingIntegrationTest {
     void pollLiveEvent_shouldFetchAndPublish() {
         String eventId = "test-event";
         logger.debug("Marking event '{}' as live", eventId);
-        trackingService.updateEventStatus(eventId, "live");
+        updateEventStatusUseCase.execute(eventId, "live");
 
         ScoreResponse mockResponse = new ScoreResponse(eventId, "Team X 2 - 1 Team Y");
         when(restTemplate.getForObject(anyString(), eq(ScoreResponse.class)))

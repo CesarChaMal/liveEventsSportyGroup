@@ -136,19 +136,71 @@ curl -X POST http://localhost:8080/events/status \
 -d '{"eventId": "match-123", "status": "live"}'
 ```
 
-## 🧠 Design Notes
+## 🏗️ Hexagonal Architecture
 
-- ✅ Facade Pattern: Simplifies the interaction between polling and external systems (fetch + publish)
-- ✅ Adapter Pattern: Clean boundary around infrastructure (Kafka, HTTP clients)
-- ✅ Hexagonal Architecture (Ports & Adapters): Core domain logic is isolated from external dependencies
-- ✅ Single Responsibility Principle (SRP): Scheduling, state tracking, publishing, and fetching are decoupled
-- ✅ Retry Logic: Built-in @Retryable support and advanced RetryTemplate configuration
-- ✅ Immutability: Java 17 record used for DTOs to ensure safe data transfer
-- ✅ Validation: Uses @Validated, @NotBlank, and @Pattern to enforce strict input validation
-- ✅ Dependency Injection: Enables testability and adherence to the Dependency Inversion Principle
-- ✅ Test Strategy: Combines unit tests (Mockito + JUnit 5) and full integration test with @SpringBootTest
-- ✅ Docker-Ready: Packaged with Docker and docker-compose for local orchestration
-- ✅ Observability: Actuator endpoints exposed at /actuator/** including /health, /info, and /metrics
+This application implements **Hexagonal Architecture (Ports & Adapters)** with clean separation of concerns:
+
+### 🎯 Domain Layer (Business Logic)
+```
+src/main/java/com/sportygroup/liveevents/domain/
+├── model/          # EventId, EventStatus, Event, Score
+├── service/        # DomainEventTrackingService
+└── port/           # EventRepository, ScoreFetcher, EventPublisherPort
+```
+- **Pure business logic** with no external dependencies
+- **Domain models** as immutable records (EventId, Score)
+- **Domain services** for business rules
+- **Ports** define contracts for external systems
+
+### 🔄 Application Layer (Use Cases)
+```
+src/main/java/com/sportygroup/liveevents/application/
+├── usecase/        # UpdateEventStatusUseCase, ProcessLiveEventsUseCase
+└── dto/            # EventStatusRequest, ScoreResponse
+```
+- **Use cases** orchestrate domain operations
+- **DTOs** for data transfer between layers
+
+### ⬇️ Inbound Adapters (Entry Points)
+```
+src/main/java/com/sportygroup/liveevents/in/
+├── web/            # REST controllers
+└── scheduler/      # Scheduled tasks
+```
+- **Web controllers** handle HTTP requests
+- **Schedulers** trigger periodic operations
+
+### ⬆️ Outbound Adapters (External Systems)
+```
+src/main/java/com/sportygroup/liveevents/out/
+├── persistence/    # Database implementations
+├── external/       # External API clients
+└── messaging/      # Kafka publishers
+```
+- **Repository implementations** for data persistence
+- **External clients** for third-party APIs
+- **Message publishers** for event streaming
+
+### ⚙️ Infrastructure (Configuration)
+```
+src/main/java/com/sportygroup/liveevents/infrastructure/
+├── config/         # Spring configuration
+└── adapter/        # Spring service adapters
+```
+- **Configuration** wires dependencies
+- **Adapters** bridge Spring framework with domain
+
+## 🧠 Design Benefits
+
+- ✅ **Dependency Inversion**: Core business logic depends only on abstractions
+- ✅ **Testability**: Each layer can be tested independently with mocks
+- ✅ **Flexibility**: Easy to swap implementations (e.g., database, message broker)
+- ✅ **Clean Separation**: Business rules isolated from infrastructure concerns
+- ✅ **SOLID Principles**: Single responsibility, open/closed, dependency inversion
+- ✅ **Immutability**: Java 17 records for safe data transfer
+- ✅ **Validation**: Strict input validation with @Validated annotations
+- ✅ **Retry Logic**: Built-in @Retryable support for resilience
+- ✅ **Observability**: Actuator endpoints for monitoring
 
 ---
 
